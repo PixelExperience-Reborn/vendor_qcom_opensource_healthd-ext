@@ -78,8 +78,9 @@ int main(int argc, char** argv) {
     android::base::InitLogging(argv, android::base::KernelLogger);
 #endif
     auto config = std::make_unique<healthd_config>();
-    qti_healthd_board_init(config.get());
     ::android::hardware::health::InitHealthdConfig(config.get());
+    // Apply Qualcomm-specific power-supply filtering only after AOSP defaults.
+    qti_healthd_board_init(config.get());
     auto binder = ndk::SharedRefBase::make<Health>(gInstanceName, std::move(config));
 
     if (argc >= 2 && argv[1] == gChargerArg) {

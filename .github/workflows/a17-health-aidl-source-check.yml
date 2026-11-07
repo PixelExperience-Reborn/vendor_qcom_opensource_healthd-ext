@@ -1,0 +1,29 @@
+name: AOSP17 Qualcomm Health AIDL V5 source review
+
+on:
+  push:
+    branches:
+      - port/a17-health-aidl-v5-mondrian-20261107
+    paths:
+      - 'aidl/**'
+      - 'health-vendor-product.mk'
+      - 'tests/check_android17_health_aidl.py'
+      - '.github/workflows/a17-health-aidl-source-check.yml'
+  pull_request:
+    paths:
+      - 'aidl/**'
+      - 'health-vendor-product.mk'
+      - 'tests/check_android17_health_aidl.py'
+      - '.github/workflows/a17-health-aidl-source-check.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  health-source-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check Android17 V5 AIDL health boundary and charger/recovery packages
+        run: python3 tests/check_android17_health_aidl.py
